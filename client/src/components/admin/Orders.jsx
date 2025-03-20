@@ -1,10 +1,21 @@
+import { useState } from "react";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Dialog } from "../ui/dialog";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
+import {
+	Table,
+	TableBody,
+	TableCell,
+	TableHead,
+	TableHeader,
+	TableRow,
+} from "../ui/table";
+import AdminOrderDetailsView from "./OrderDetails";
 
-function ShoppingOrders() {
+function AdminOrdersView() {
+    const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
+
 	return (
 		<Card>
 			<CardHeader>
@@ -23,17 +34,34 @@ function ShoppingOrders() {
 							</TableHead>
 						</TableRow>
 					</TableHeader>
-                    <TableBody>
-                        <TableRow>
-                            <TableCell>123456</TableCell>
-                            <TableCell>123</TableCell>
-                            <TableCell>xyz</TableCell>
-                            <TableCell>45</TableCell>
-                            <TableCell>
-                                <Button>View Details</Button>
-                            </TableCell>
-                        </TableRow>
-                    </TableBody>
+					<TableBody>
+						<TableRow>
+							<TableCell>123456</TableCell>
+							<TableCell>123</TableCell>
+							<TableCell>xyz</TableCell>
+							<TableCell>45</TableCell>
+							<TableCell>
+								<Dialog
+									open={openDetailsDialog}
+									onOpenChange={() => {
+										setOpenDetailsDialog(false);
+										// dispatch(
+										// 	resetOrderDetails()
+										// );
+									}}
+								>
+									<Button
+										onClick={() =>
+											setOpenDetailsDialog(true)
+										}
+									>   
+                                        View Details
+										<AdminOrderDetailsView/>
+									</Button>
+								</Dialog>
+							</TableCell>
+						</TableRow>
+					</TableBody>
 					{/* <TableBody>
 						{orderList && orderList.length > 0
 							? orderList.map((orderItem) => (
@@ -94,4 +122,4 @@ function ShoppingOrders() {
 	);
 }
 
-export default ShoppingOrders;
+export default AdminOrdersView;
