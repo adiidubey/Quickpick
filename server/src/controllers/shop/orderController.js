@@ -1,4 +1,4 @@
-import paypal from "../../helpers/paypal.js";
+import {paypal} from "../../helpers/paypal.js";
 import { Order } from "../../models/order.model.js";
 import { Cart } from "../../models/cart.model.js";
 import { Product } from "../../models/product.model.js";
