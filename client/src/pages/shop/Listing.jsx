@@ -46,6 +46,8 @@ function ShoppingListing() {
 	const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
 	const { user } = useSelector((state) => state.auth);
 
+	const categorySearchParam = searchParams.get("category");
+
 	useEffect(() => {
 		if (filters !== null && sort !== null)
 			dispatch(
@@ -59,7 +61,7 @@ function ShoppingListing() {
 	useEffect(() => {
 		setSort("price-lowtohigh");
 		setFilters(JSON.parse(sessionStorage.getItem("filters")) || {});
-	}, []);
+	}, [categorySearchParam]);
 
 	useEffect(() => {
 		if (filters && Object.keys(filters).length > 0) {
@@ -112,7 +114,7 @@ function ShoppingListing() {
 			})
 		).then((data) => {
 			if (data?.payload?.success) dispatch(fetchCartItems(user?.id));
-            toast("Product is added to cart")
+			toast("Product is added to cart");
 		});
 	}
 

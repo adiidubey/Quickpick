@@ -9,6 +9,7 @@ import shopProductsRouter from "./src/routes/shop/productRoutes.js";
 import shopCartRouter from "./src/routes/shop/cartRoutes.js";
 import shopAddressRouter from "./src/routes/shop/addressRoutes.js";
 import shopOrderRouter from "./src/routes/shop/orderRoutes.js";
+import adminOrderRouter from "./src/routes/admin/orderRoutes.js";
 
 dotenv.config();
 
@@ -39,6 +40,8 @@ app.use(cookieParser());
 app.use(express.json());
 app.use("/api/auth", authRouter);
 app.use("/api/admin/products", adminProductsRouter);
+app.use("/api/admin/orders", adminOrderRouter);
+
 app.use("/api/shop/products", shopProductsRouter);
 app.use("/api/shop/cart", shopCartRouter);
 app.use("/api/shop/address", shopAddressRouter);

@@ -1,5 +1,10 @@
 import { HousePlug, LogOut, Menu, ShoppingCart, UserCog } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import {
+	Link,
+	useLocation,
+	useNavigate,
+	useSearchParams,
+} from "react-router-dom";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import { Button } from "../ui/button";
 import { shoppingViewHeaderMenuItems } from "@/config";
@@ -20,26 +25,35 @@ import { fetchCartItems } from "@/store/shop/cartSlice";
 import { Label } from "../ui/label";
 
 function MenuItems() {
-    const navigate = useNavigate();
+	const navigate = useNavigate();
+	const location = useLocation();
+	const [searchParams, setSearchParams] = useSearchParams();
 
 	function handleNavigate(getCurrentMenuItem) {
 		sessionStorage.removeItem("filters");
 		const currentFilter =
-			getCurrentMenuItem.id === "home"
+			getCurrentMenuItem.id !== "home" &&
+			getCurrentMenuItem.id !== "products" &&
+			getCurrentMenuItem.id !== "search"
 				? {
 						category: [getCurrentMenuItem.id],
 				  }
 				: null;
 
 		sessionStorage.setItem("filters", JSON.stringify(currentFilter));
-		navigate(getCurrentMenuItem.path);
+
+		location.pathname.includes("listing") && currentFilter !== null
+			? setSearchParams(
+					new URLSearchParams(`?category=${getCurrentMenuItem.id}`)
+			  )
+			: navigate(getCurrentMenuItem.path);
 	}
 
 	return (
 		<nav className="flex flex-col mb-3 lg:mb-0 lg:items-center gap-6 lg:flex-row">
 			{shoppingViewHeaderMenuItems.map((menuItem) => (
 				<Label
-                    onClick={()=> handleNavigate(menuItem)}
+					onClick={() => handleNavigate(menuItem)}
 					className="text-sm font-medium"
 					key={menuItem.id}
 				>
@@ -81,7 +95,7 @@ function HeaderRightContent() {
 					<span className="sr-only">User Cart</span>
 				</Button>
 				<UserCartWrapper
-                    setOpenCartSheet={setOpenCartSheet}
+					setOpenCartSheet={setOpenCartSheet}
 					cartItems={
 						cartItems &&
 						cartItems.items &&

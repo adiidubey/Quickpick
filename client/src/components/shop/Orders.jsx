@@ -1,10 +1,38 @@
+import { useEffect, useState } from "react";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Dialog } from "../ui/dialog";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
+import {
+	Table,
+	TableBody,
+	TableCell,
+	TableHead,
+	TableHeader,
+	TableRow,
+} from "../ui/table";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllOrdersByUserId, getOrderDetails, resetOrderDetails } from "@/store/shop/orderSlice";
+import ShoppingOrderDetailsView from "./OrderDetails";
 
 function ShoppingOrders() {
+	const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
+	const dispatch = useDispatch();
+	const { user } = useSelector((state) => state.auth);
+	const { orderList, orderDetails } = useSelector((state) => state.shopOrder);
+
+	useEffect(() => {
+		dispatch(getAllOrdersByUserId(user?.id));
+	}, [dispatch]);
+
+	useEffect(() => {
+		if (orderDetails !== null) setOpenDetailsDialog(true);
+	}, [orderDetails]);
+
+	function handleFetchOrderDetails(getId) {
+		dispatch(getOrderDetails(getId));
+	}
+
 	return (
 		<Card>
 			<CardHeader>
@@ -23,18 +51,7 @@ function ShoppingOrders() {
 							</TableHead>
 						</TableRow>
 					</TableHeader>
-                    <TableBody>
-                        <TableRow>
-                            <TableCell>123456</TableCell>
-                            <TableCell>123</TableCell>
-                            <TableCell>xyz</TableCell>
-                            <TableCell>45</TableCell>
-                            <TableCell>
-                                <Button>View Details</Button>
-                            </TableCell>
-                        </TableRow>
-                    </TableBody>
-					{/* <TableBody>
+					<TableBody>
 						{orderList && orderList.length > 0
 							? orderList.map((orderItem) => (
 									<TableRow>
@@ -87,7 +104,7 @@ function ShoppingOrders() {
 									</TableRow>
 							  ))
 							: null}
-					</TableBody> */}
+					</TableBody>
 				</Table>
 			</CardContent>
 		</Card>

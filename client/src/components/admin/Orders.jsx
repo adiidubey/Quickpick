@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { Badge } from "../ui/badge";
+import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Dialog } from "../ui/dialog";
@@ -12,14 +11,37 @@ import {
 	TableRow,
 } from "../ui/table";
 import AdminOrderDetailsView from "./OrderDetails";
+import { useDispatch, useSelector } from "react-redux";
+import {
+	getAllOrdersForAdmin,
+	getOrderDetailsForAdmin,
+	resetOrderDetails,
+} from "@/store/admin/orderSlice";
+import { Badge } from "../ui/badge";
 
 function AdminOrdersView() {
-    const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
+	const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
+	const { orderList, orderDetails } = useSelector(
+		(state) => state.adminOrder
+	);
+	const dispatch = useDispatch();
+
+	useEffect(() => {
+		dispatch(getAllOrdersForAdmin());
+	}, [dispatch]);
+
+	useEffect(() => {
+		if (orderDetails !== null) setOpenDetailsDialog(true);
+	}, [orderDetails]);
+
+	function handleFetchOrderDetails(getId) {
+		dispatch(getOrderDetailsForAdmin(getId));
+	}
 
 	return (
 		<Card>
 			<CardHeader>
-				<CardTitle>Order History</CardTitle>
+				<CardTitle>All Orders</CardTitle>
 			</CardHeader>
 			<CardContent>
 				<Table>
@@ -35,34 +57,6 @@ function AdminOrdersView() {
 						</TableRow>
 					</TableHeader>
 					<TableBody>
-						<TableRow>
-							<TableCell>123456</TableCell>
-							<TableCell>123</TableCell>
-							<TableCell>xyz</TableCell>
-							<TableCell>45</TableCell>
-							<TableCell>
-								<Dialog
-									open={openDetailsDialog}
-									onOpenChange={() => {
-										setOpenDetailsDialog(false);
-										// dispatch(
-										// 	resetOrderDetails()
-										// );
-									}}
-								>
-									<Button
-										onClick={() =>
-											setOpenDetailsDialog(true)
-										}
-									>   
-                                        View Details
-										<AdminOrderDetailsView/>
-									</Button>
-								</Dialog>
-							</TableCell>
-						</TableRow>
-					</TableBody>
-					{/* <TableBody>
 						{orderList && orderList.length > 0
 							? orderList.map((orderItem) => (
 									<TableRow>
@@ -107,7 +101,7 @@ function AdminOrdersView() {
 												>
 													View Details
 												</Button>
-												<ShoppingOrderDetailsView
+												<AdminOrderDetailsView
 													orderDetails={orderDetails}
 												/>
 											</Dialog>
@@ -115,7 +109,7 @@ function AdminOrdersView() {
 									</TableRow>
 							  ))
 							: null}
-					</TableBody> */}
+					</TableBody>
 				</Table>
 			</CardContent>
 		</Card>

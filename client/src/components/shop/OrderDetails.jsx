@@ -1,41 +1,11 @@
-import { useState } from "react";
-import CommonForm from "../common/Form";
+import { useSelector } from "react-redux";
+import { Badge } from "../ui/badge";
 import { DialogContent } from "../ui/dialog";
 import { Label } from "../ui/label";
 import { Separator } from "../ui/separator";
-import { Badge } from "../ui/badge";
-import { useDispatch, useSelector } from "react-redux";
-import {
-	getAllOrdersForAdmin,
-	getOrderDetailsForAdmin,
-	updateOrderStatus,
-} from "@/store/admin/orderSlice";
-import {toast} from "sonner";
 
-const initialFormData = {
-	status: "",
-};
-
-function AdminOrderDetailsView({ orderDetails }) {
-	const [formData, setFormData] = useState(initialFormData);
+function ShoppingOrderDetailsView({ orderDetails }) {
 	const { user } = useSelector((state) => state.auth);
-	const dispatch = useDispatch();
-
-	function handleUpdateStatus(event) {
-		event.preventDefault();
-		const { status } = formData;
-
-		dispatch(
-			updateOrderStatus({ id: orderDetails?._id,orderStatus: status })
-		).then((data) => {
-			if (data?.payload?.success) {
-				dispatch(getOrderDetailsForAdmin(orderDetails?._id));
-				dispatch(getAllOrdersForAdmin());
-				setFormData(initialFormData);
-				toast(data?.payload?.message);
-			}  
-		});
-	}
 
 	return (
 		<DialogContent className="sm:max-w-[600px]">
@@ -112,32 +82,9 @@ function AdminOrderDetailsView({ orderDetails }) {
 						</div>
 					</div>
 				</div>
-
-				<div>
-					<CommonForm
-						formControls={[
-							{
-								label: "Order Status",
-								name: "status",
-								componentType: "select",
-								options: [
-									{ id: "pending", label: "Pending" },
-									{ id: "inProcess", label: "In Process" },
-									{ id: "inShipping", label: "In Shipping" },
-									{ id: "delivered", label: "Delivered" },
-									{ id: "rejected", label: "Rejected" },
-								],
-							},
-						]}
-						formData={formData}
-						setFormData={setFormData}
-						buttonText={"Update Order Status"}
-						onSubmit={handleUpdateStatus}
-					/>
-				</div>
 			</div>
 		</DialogContent>
 	);
 }
 
-export default AdminOrderDetailsView;
+export default ShoppingOrderDetailsView;
