@@ -21,6 +21,7 @@ import { checkAuthUser } from "./store/auth/authSlice";
 import { Skeleton } from "./components/ui/skeleton";
 import PaypalReturnPage from "./pages/shop/PaypalReturn";
 import PaymentSuccessPage from "./pages/shop/PaymentSuccess";
+import SearchProducts from "./pages/shop/Search";
 
 function App() {
 	const { user, isAuthenticated, isLoading } = useSelector((state) => state.auth);
@@ -86,6 +87,7 @@ function App() {
 						<Route path="account" element={<ShoppingAccount />} />
 						<Route path="paypal-return" element={<PaypalReturnPage />} />
 						<Route path="payment-success" element={<PaymentSuccessPage />} />
+						<Route path="search" element={<SearchProducts />} />
 					</Route>
 
 					<Route path="*" element={<NotFound />}></Route>

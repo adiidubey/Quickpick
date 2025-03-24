@@ -5,11 +5,13 @@ import dotenv from "dotenv";
 import cors from "cors";
 import authRouter from "./src/routes/auth/authRoutes.js";
 import adminProductsRouter from "./src/routes/admin/productRoutes.js";
+import adminOrderRouter from "./src/routes/admin/orderRoutes.js";
 import shopProductsRouter from "./src/routes/shop/productRoutes.js";
 import shopCartRouter from "./src/routes/shop/cartRoutes.js";
 import shopAddressRouter from "./src/routes/shop/addressRoutes.js";
 import shopOrderRouter from "./src/routes/shop/orderRoutes.js";
-import adminOrderRouter from "./src/routes/admin/orderRoutes.js";
+import shopSearchRouter from "./src/routes/shop/searchRoutes.js";
+
 
 dotenv.config();
 
@@ -46,5 +48,6 @@ app.use("/api/shop/products", shopProductsRouter);
 app.use("/api/shop/cart", shopCartRouter);
 app.use("/api/shop/address", shopAddressRouter);
 app.use("/api/shop/order", shopOrderRouter);
+app.use("/api/shop/search", shopSearchRouter);
 
 app.listen(PORT, () => console.log(`Server is running on PORT : ${PORT}`));

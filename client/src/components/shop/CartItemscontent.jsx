@@ -62,7 +62,7 @@ function UserCartItemsContent({ cartItem }) {
 		dispatch(
 			deleteCartItems({
 				userId: user?.id,
-				productId: getCartItem?.productId,
+				productId: getCartItem?.productId, 
 			})
 		).then((data) => {
 			if (data?.payload?.success) {
