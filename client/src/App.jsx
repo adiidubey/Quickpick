@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation, useNavigate} from "react-router-dom";
 import AuthLayout from "./components/auth/Layout";
 import AuthLogin from "./pages/auth/Login";
 import AuthRegister from "./pages/auth/Register";
@@ -26,10 +26,13 @@ import SearchProducts from "./pages/shop/Search";
 function App() {
 	const { user, isAuthenticated, isLoading } = useSelector((state) => state.auth);
     const dispatch = useDispatch();
+    const location = useLocation();
+    const navigate = useNavigate();
 
     useEffect(()=>{
         dispatch(checkAuthUser())
     },[dispatch])
+
 
     if (isLoading) return <Skeleton className="w-full h-screen bg-slate-300" />;
 
@@ -38,6 +41,7 @@ function App() {
 		<>
 			<div className="flex flex-col overflow-hidden bg-white">
 				<Routes>
+                    
 					<Route
 						path="/auth"
 						element={
