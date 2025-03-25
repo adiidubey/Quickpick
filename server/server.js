@@ -54,4 +54,6 @@ app.use("/api/shop/address", shopAddressRouter);
 app.use("/api/shop/order", shopOrderRouter);
 app.use("/api/shop/search", shopSearchRouter);
 
-app.listen(PORT, () => console.log(`Server is running on PORT : ${PORT}`));
+app.listen(PORT, "0.0.0.0", () => {
+	console.log(`Server is running on PORT: ${PORT}`);
+});
