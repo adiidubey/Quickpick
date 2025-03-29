@@ -29,6 +29,7 @@ import { useNavigate } from "react-router-dom";
 import { addToCart, fetchCartItems } from "@/store/shop/cartSlice";
 import { toast } from "sonner";
 import ProductDetailsDialog from "@/components/shop/ProductDetails";
+import { getFeatureImages } from "@/store/commonSlice";
 
 const categoriesWithIcon = [
 	{ id: "men", label: "Men", icon: ShirtIcon },
@@ -54,6 +55,7 @@ function ShoppingHome() {
 	const navigate = useNavigate();
 	const { user } = useSelector((state) => state.auth);
     const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
+    const { featureImageList } = useSelector((state) => state.commonFeature);
 	const slides = [bannerOne, bannerTwo, bannerThree];
 
 	useEffect(() => {
@@ -76,6 +78,10 @@ function ShoppingHome() {
     useEffect(() => {
 		if (productDetails !== null) setOpenDetailsDialog(true);
 	}, [productDetails]);
+
+    useEffect(() => {
+			dispatch(getFeatureImages());
+		}, [dispatch]);
 
 	function handleNavigateToListingPage(getCurrentItem, section) {
 		sessionStorage.removeItem("filters");
@@ -107,22 +113,27 @@ function ShoppingHome() {
 	return (
 		<div className="flex flex-col min-h-screen">
 			<div className="relative w-full h-[600px] overflow-hidden">
-				{slides.map((slide, index) => (
-					<img
-						src={slide}
-						key={index}
-						className={`${
-							index === currentSlide ? "opacity-100" : "opacity-0"
-						} absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-1000`}
-					/>
-				))}
+				{featureImageList && featureImageList.length > 0
+					? featureImageList.map((slide, index) => (
+							<img
+								src={slide?.image}
+								key={index}
+								className={`${
+									index === currentSlide
+										? "opacity-100"
+										: "opacity-0"
+								} absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-1000`}
+							/>
+					  ))
+					: null}
 				<Button
 					variant="outline"
 					size="icon"
 					onClick={() =>
 						setCurrentSlide(
 							(prevSlide) =>
-								(prevSlide - 1 + slides.length) % slides.length
+								(prevSlide - 1 + featureImageList.length) %
+								featureImageList.length
 						)
 					}
 					className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white/80"

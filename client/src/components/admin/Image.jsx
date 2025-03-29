@@ -16,6 +16,7 @@ function ProductImage({
 	imageLoading,
 	setImageLoading,
 	isEditMode,
+    isCustomStyling = false
 }) {
 	const inputRef = useRef(null);
 
@@ -60,7 +61,11 @@ function ProductImage({
 	}
 
 	return (
-		<div className="w-full max-w-md mx-auto">
+		<div
+			className={`w-full  mt-4 ${
+				isCustomStyling ? "" : "max-w-md mx-auto"
+			}`}
+		>
 			<div
 				onDragOver={handleDragOver}
 				onDrop={handleDrop}

@@ -29,12 +29,13 @@ function ShoppingCheckout() {
 			: 0;
 
 	function handleInitiatePaypalPayment() {
-        if (!cartItems.length) {
-            toast("Cart is empty", {
+        console.log(cartItems.items.length, "aditya")
+        if (!cartItems.items.length) {
+			toast("Cart is empty", {
 				type: "error",
 			});
-            return;
-        }
+			return;
+		}
 
 		if (!currentSelectedAddress) {
 			toast("Please select an address to proceed", {
@@ -119,9 +120,9 @@ function ShoppingCheckout() {
 							className="w-full"
 						>
 							Checkout
-							{/* {isPaymentStart
+							{isPaymentStart
 								? "Processing Paypal Payment..."
-								: "Checkout with Paypal"} */}
+								: "Checkout with Paypal"}
 						</Button>
 					</div>
 				</div>
