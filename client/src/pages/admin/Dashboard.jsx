@@ -26,8 +26,6 @@ function AdminDashboard() {
 		dispatch(getFeatureImages());
 	}, [dispatch]);
 
-	console.log(featureImageList, "featureImageList");
-
 	return (
 		<div>
 			<ProductImageUpload
@@ -35,8 +33,8 @@ function AdminDashboard() {
 				setImageFile={setImageFile}
 				uploadedImageUrl={uploadedImageUrl}
 				setUploadedImageUrl={setUploadedImageUrl}
-				setImageLoadingState={setImageLoadingState}
-				imageLoadingState={imageLoadingState}
+				setImageLoading={setImageLoadingState}
+				imageLoading={imageLoadingState}
 				isCustomStyling={true}
 			/>
 			<Button onClick={handleUploadFeatureImage} className="mt-5 w-full">
